@@ -11,7 +11,7 @@ apt --assume-yes install nodejs npm libpcap0.8-dev bridge-utils iptables ebtable
 #install other standard software to make life easier
 apt --assume-yes install vim tmux screen zip unzip dnsutils curl
 
-#force the interfaces to be named with predictable conventions. This allows us to easliy swap our Ethernet NIC etc. and know we can reference it in udhcpd and /etc/network/interfaces as eth2
+#force the interfaces to be named with predictable conventions. This allows us to easliy swap our Ethernet NIC etc. and know we can reference it in udhcpd and /etc/network/interfaces as enp3s0
 ln -s /dev/null /etc/systemd/network/99-default.link
 
 #set up configs for wlan0 as management interface

@@ -122,7 +122,7 @@ bash finish_setup.sh
 
 #### LTE Management Setup
 
-In addition to running the basic setup.sh script, you will need to make sure your USB modem is functioning properly before locking ourselves out of eth0 and eth1. The two key components we need to test are usb\_modeswitch and wvdial.
+In addition to running the basic setup.sh script, you will need to make sure your USB modem is functioning properly before locking ourselves out of enp1s0 and enp2s0. The two key components we need to test are usb\_modeswitch and wvdial.
 
 ##### USB ModeSwitch
 
@@ -284,7 +284,7 @@ You may run into issues if you have any other network interfaces up. Make sure t
 
 The tool is designed to automatically route any traffic in the reserved ranges 10.0.0.0/8, 192.168.0.0/16, and 172.16.0.0/12 to the attacking bridge interface and onto the internal target network with the exception of 172.16.255.0/24, which is used to create a management subnet for the attack. You should use the 172.16.255.0/24 as the network range for your VPN or Zerotier config so that the Dolos device receives an IP in this range when it calls home. Then, when you connect your laptop/VM to the same VPN/Zerotier network, it will also receive an address in this range and be able to reach the Dolos device and use it to route traffic to other reserved ranges. For example:
 
-Your Eth0:	192.168.1.5/24
+Your enp1s0:	192.168.1.5/24
 
 Your Tun0:	172.31.255.3
 
@@ -304,7 +304,7 @@ You can then add 'server 10.100.100.53' to your /etc/resolv.conf and your laptop
 
 ##### WARNING:
 
-If the target network is using the same range as your default route, you may drop your own network connection. In this example, if your target network was also using 192.168.1.0/24, you would want to connect your Eth0 to some other network that is not using this range before proceeding.
+If the target network is using the same range as your default route, you may drop your own network connection. In this example, if your target network was also using 192.168.1.0/24, you would want to connect your enp1s0 to some other network that is not using this range before proceeding.
 
 #### Give the Dolos Device Internet Access
 

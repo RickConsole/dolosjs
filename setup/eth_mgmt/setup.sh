@@ -14,12 +14,12 @@ apt --assume-yes install udhcpd
 #install other standard software to make life easier
 apt --assume-yes install vim tmux screen zip unzip dnsutils curl
 
-#force the interfaces to be named with predictable conventions. This allows us to easliy swap our Ethernet NIC etc. and know we can reference it in udhcpd and /etc/network/interfaces as eth2
+#force the interfaces to be named with predictable conventions. This allows us to easliy swap our Ethernet NIC etc. and know we can reference it in udhcpd and /etc/network/interfaces as enp3s0
 ln -s /dev/null /etc/systemd/network/99-default.link
 
 #set up configs for wlan0 as management interface
 cp ./config.js ../../
-cp ./etc_network_interfaces.d_eth2 /etc/network/interfaces.d/eth2
+cp ./etc_network_interfaces.d_enp3s0 /etc/network/interfaces.d/enp3s0
 cp ./etc_udhcpd.conf /etc/udhcpd.conf
 cp ./etc_default_udhcpd /etc/default/udhcpd
 
