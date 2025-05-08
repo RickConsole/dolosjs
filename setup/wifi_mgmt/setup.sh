@@ -14,14 +14,14 @@ apt --assume-yes install hostapd udhcpd
 #install other standard software to make life easier
 apt --assume-yes install vim tmux screen zip unzip dnsutils curl
 
-#force the interfaces to be named with predictable conventions. This allows us to easliy swap our WiFi NIC etc. and know we can reference it in hostapd and /etc/network/interfaces as wlan0
+#force the interfaces to be named with predictable conventions. This allows us to easliy swap our WiFi NIC etc. and know we can reference it in hostapd and /etc/network/interfaces as wlxe0b9a53a4040
 ln -s /dev/null /etc/systemd/network/99-default.link
 
-#set up configs for wlan0 as management interface
+#set up configs for wlxe0b9a53a4040 as management interface
 cp ./config.js ../../
 cp ./etc_default_hostapd /etc/default/hostapd
 cp ./etc_hostapd_hostapd.conf /etc/hostapd/hostapd.conf
-cp ./etc_network_interfaces.d_wlan0 /etc/network/interfaces.d/wlan0
+cp ./etc_network_interfaces.d_wlxe0b9a53a4040 /etc/network/interfaces.d/wlxe0b9a53a4040
 cp ./etc_udhcpd.conf /etc/udhcpd.conf
 cp ./etc_default_udhcpd /etc/default/udhcpd
 mkdir /etc/systemd/system/udhcpd.service.d
@@ -55,7 +55,7 @@ systemctl daemon-reload
 systemctl restart udhcpd
 
 #make sure NetworkManager.service doesn't do something unexpected to our management interface
-nmcli d set wlan0 managed no
+nmcli d set wlxe0b9a53a4040 managed no
 
 #install Node.js deps
 cd ../../

@@ -20,7 +20,7 @@ apt --assume-yes install ppp usb-modeswitch wvdial
 #install other standard software to make life easier
 apt --assume-yes install vim tmux screen zip unzip dnsutils curl
 
-#force the interfaces to be named with predictable conventions. This allows us to easliy swap our WiFi NIC etc. and know we can reference it in hostapd and /etc/network/interfaces as wlan0
+#force the interfaces to be named with predictable conventions. This allows us to easliy swap our WiFi NIC etc. and know we can reference it in hostapd and /etc/network/interfaces as wlxe0b9a53a4040
 ln -s /dev/null /etc/systemd/network/99-default.link
 
 #set up some configs for the interfaces and wvdial
