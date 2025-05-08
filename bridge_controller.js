@@ -77,6 +77,9 @@ class BridgeController extends EventEmitter {
         os_cmd('Allow communication on interfaces not used in the attack', `arptables -A OUTPUT -o ${iface} -j ACCEPT`)
       }
     }
+    
+    // Explicitly allow ARP on management interface (enp3s0)
+    os_cmd('Allow ARP on management interface', `arptables -A OUTPUT -o enp3s0 -j ACCEPT`)
     //https://en.wikipedia.org/wiki/EtherType
     os_cmd('Additional granular block on other ARP types', `ebtables -A OUTPUT -p 0x0806 -j DROP`)
     os_cmd('Additional granular block on other ARP types', `ebtables -A OUTPUT -p 0x0808 -j DROP`)
@@ -167,6 +170,9 @@ class BridgeController extends EventEmitter {
         os_cmd('Allow communication on interfaces not used in the attack', `arptables -A OUTPUT -o ${iface} -j ACCEPT`)
       }
     }
+    
+    // Explicitly allow ARP on management interface (enp3s0) after flush
+    os_cmd('Allow ARP on management interface', `arptables -A OUTPUT -o enp3s0 -j ACCEPT`)
     this.stop_bridge(shutdown)
   }
   
