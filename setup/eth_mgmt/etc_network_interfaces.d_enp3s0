@@ -1,5 +1,0 @@
-auto enp3s0
-iface enp3s0 inet static
-    address 172.31.255.1
-    netmask 255.255.255.0
-    broadcast 172.31.255.255
