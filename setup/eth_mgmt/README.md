@@ -24,7 +24,7 @@ sudo bash setup.sh --ghost-port1 enp1s0 --ghost-port2 enp2s0 --management-port e
 ## Interface Roles
 
 - **Ghost Ports (1 & 2)**: Used for transparent 802.1x bypassing between supplicant and switch
-- **Management Port**: Provides operator access with static IP (172.31.255.1) and DHCP server
+- **Management Port**: Provides operator access with static IP (192.168.100.1), no DHCP server
 
 ## Examples
 
@@ -53,6 +53,17 @@ sudo bash finish_setup.sh --ghost-port1 enp1s0 --ghost-port2 enp2s0 --management
 ## Network Configuration
 
 The management interface will be configured with:
-- Static IP: 172.31.255.1
-- DHCP Range: 172.31.255.10-254
-- Lease Time: 12 hours
+- Static IP: 192.168.100.1
+- No DHCP server (clients must use static IP configuration)
+- SSH access restricted to management interface only
+
+### Client Configuration
+
+To connect to the management interface, configure your client with:
+- IP Address: 192.168.100.x (where x is 2-254, avoid 1 which is the device)
+- Subnet Mask: 255.255.255.0
+- Gateway: 192.168.100.1 (optional, for internet access through device)
+
+### SSH Access
+
+SSH is configured to listen only on the management interface (192.168.100.1:22) to prevent interference with 802.1x bypassing operations.
