@@ -44,4 +44,11 @@ echo "  Management Port: $MGMT_PORT"
 sed "s/INTERFACE_NAME/$GHOST_PORT1/g" ./template_ghost_interface.conf > /etc/network/interfaces.d/$GHOST_PORT1
 sed "s/INTERFACE_NAME/$GHOST_PORT2/g" ./template_ghost_interface.conf > /etc/network/interfaces.d/$GHOST_PORT2
 
+# Update config.js with interface names (in case it wasn't done during setup)
+if [ -f "../../config.js" ]; then
+    sed -i "s/GHOST_PORT1_PLACEHOLDER/$GHOST_PORT1/g" ../../config.js
+    sed -i "s/GHOST_PORT2_PLACEHOLDER/$GHOST_PORT2/g" ../../config.js
+    sed -i "s/MGMT_PORT_PLACEHOLDER/$MGMT_PORT/g" ../../config.js
+fi
+
 systemctl enable dolos_service

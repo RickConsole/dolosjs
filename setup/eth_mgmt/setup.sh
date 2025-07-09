@@ -93,8 +93,11 @@ sed "s/INTERFACE_NAME/$MGMT_PORT/g" ./template_mgmt_interface.conf > /etc/networ
 # Generate dnsmasq configuration - COMMENTED OUT (using static IP only)
 # sed "s/INTERFACE_NAME/$MGMT_PORT/g" ./template_dnsmasq.conf > /etc/dnsmasq.conf
 
-# Copy main config
+# Copy main config and update interface placeholders
 cp ./config.js ../../
+sed -i "s/GHOST_PORT1_PLACEHOLDER/$GHOST_PORT1/g" ../../config.js
+sed -i "s/GHOST_PORT2_PLACEHOLDER/$GHOST_PORT2/g" ../../config.js
+sed -i "s/MGMT_PORT_PLACEHOLDER/$MGMT_PORT/g" ../../config.js
 
 #ask the tech for their multiplexer pref
 promptanswered=0
