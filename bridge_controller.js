@@ -72,15 +72,12 @@ class BridgeController extends EventEmitter {
     os_cmd('Use "policy" to drop all outbound Ethernet traffic from our device', `ebtables -P OUTPUT DROP`)
     os_cmd('Use "policy" to drop all outbound ARP traffic from our device', `arptables -P OUTPUT DROP`)
     for(const iface in interfaces){
-      if(![this.bridge_name, this.nic1, this.nic2, this.mgmt_interface].includes(iface)){
-        os_cmd('Allow communication on interfaces not used in the attack', `ebtables -A OUTPUT -o ${iface} -j ACCEPT`)
+      if(![this.bridge_name, this.nic1, this.nic2].includes(iface)){
+        os_cmd('Allow communication on interfaces not used in the attack', `ebtables -I OUTPUT 1 -o ${iface} -j ACCEPT`)
         os_cmd('Allow communication on interfaces not used in the attack', `iptables -A OUTPUT -o ${iface} -j ACCEPT`)
         os_cmd('Allow communication on interfaces not used in the attack', `arptables -A OUTPUT -o ${iface} -j ACCEPT`)
       }
     }
-    
-    // Explicitly allow ARP on management interface
-    os_cmd('Allow ARP on management interface', `arptables -A OUTPUT -o ${this.mgmt_interface} -j ACCEPT`)
     //https://en.wikipedia.org/wiki/EtherType
     os_cmd('Additional granular block on other ARP types', `ebtables -A OUTPUT -p 0x0806 -j DROP`)
     os_cmd('Additional granular block on other ARP types', `ebtables -A OUTPUT -p 0x0808 -j DROP`)
@@ -165,15 +162,12 @@ class BridgeController extends EventEmitter {
     os_cmd('Clear iptables mangle rules',`iptables -t mangle -F`)
     os_cmd('Clear iptables rules',`iptables -t raw -F`)
     for(const iface in interfaces){
-      if(![this.bridge_name, this.nic1, this.nic2, this.mgmt_interface].includes(iface)){
-        os_cmd('Allow communication on interfaces not used in the attack', `ebtables -A OUTPUT -o ${iface} -j ACCEPT`)
+      if(![this.bridge_name, this.nic1, this.nic2].includes(iface)){
+        os_cmd('Allow communication on interfaces not used in the attack', `ebtables -I OUTPUT 1 -o ${iface} -j ACCEPT`)
         os_cmd('Allow communication on interfaces not used in the attack', `iptables -A OUTPUT -o ${iface} -j ACCEPT`)
         os_cmd('Allow communication on interfaces not used in the attack', `arptables -A OUTPUT -o ${iface} -j ACCEPT`)
       }
     }
-    
-    // Explicitly allow ARP on management interface after flush
-    os_cmd('Allow ARP on management interface', `arptables -A OUTPUT -o ${this.mgmt_interface} -j ACCEPT`)
     this.stop_bridge(shutdown)
   }
   
