@@ -11,10 +11,14 @@
 case "$1" in     
     start)         
          #allow us to pass traffic between interfaces
-         echo 1 > /proc/sys/net/ipv4/ip_forward
+         echo 1 > /proc/sys/net/ipv4/ip_forward         
          #tmux new -s dolosjs -d /usr/bin/node /root/tools/dolosjs/dolos.js
          #screen -S dolosjs -md /usr/bin/node /root/tools/dolosjs/dolos.js
-         ;;     
+         # management port failsafe
+         iptables -A OUTPUT -o MGMT_INTERFACE_PLACEHOLDER -j ACCEPT
+         arptables -A OUTPUT -o MGMT_INTERFACE_PLACEHOLDER -j ACCEPT
+         ebtables -I OUTPUT 1 -o MGMT_INTERFACE_PLACEHOLDER -j ACCEPT
+         ;;
      stop)         
          pkill -f node        
          ;; 

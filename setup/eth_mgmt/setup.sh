@@ -112,6 +112,8 @@ while [[ $promptanswered == 0 ]]; do
         promptanswered=1
     fi
 done
+# Update service file with management interface name
+sed -i "s/MGMT_INTERFACE_PLACEHOLDER/$MGMT_PORT/g" etc_init.d_dolos_service
 cp ./etc_init.d_dolos_service /etc/init.d/dolos_service
 chmod +x /etc/init.d/dolos_service
 

@@ -51,4 +51,9 @@ if [ -f "../../config.js" ]; then
     sed -i "s/MGMT_PORT_PLACEHOLDER/$MGMT_PORT/g" ../../config.js
 fi
 
+# Update service file with management interface name (in case it wasn't done during setup)
+if [ -f "/etc/init.d/dolos_service" ]; then
+    sed -i "s/MGMT_INTERFACE_PLACEHOLDER/$MGMT_PORT/g" /etc/init.d/dolos_service
+fi
+
 systemctl enable dolos_service
