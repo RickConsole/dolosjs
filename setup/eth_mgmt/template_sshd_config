@@ -1,0 +1,10 @@
+Include /etc/ssh/sshd_config.d/*.conf
+
+Port 22
+ListenAddress 192.168.100.1
+
+KbdInteractiveAuthentication no
+UsePAM yes
+X11Forwarding yes
+PrintMotd no
+AcceptEnv LANG LC_*

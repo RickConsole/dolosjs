@@ -69,7 +69,8 @@ apt -y upgrade
 apt --assume-yes install nodejs npm libpcap0.8-dev bridge-utils iptables ebtables arptables network-manager make g++
 
 #install deps for Ethernet as management interface
-apt --assume-yes install dnsmasq
+# Commented out dnsmasq - using static IP only, no DHCP server
+# apt --assume-yes install dnsmasq
 
 #install other standard software to make life easier
 apt --assume-yes install vim tmux screen zip unzip dnsutils curl
@@ -89,11 +90,14 @@ sed "s/INTERFACE_NAME/$GHOST_PORT2/g" ./template_ghost_interface.conf > /etc/net
 # Generate management port configuration
 sed "s/INTERFACE_NAME/$MGMT_PORT/g" ./template_mgmt_interface.conf > /etc/network/interfaces.d/$MGMT_PORT
 
-# Generate dnsmasq configuration
-sed "s/INTERFACE_NAME/$MGMT_PORT/g" ./template_dnsmasq.conf > /etc/dnsmasq.conf
+# Generate dnsmasq configuration - COMMENTED OUT (using static IP only)
+# sed "s/INTERFACE_NAME/$MGMT_PORT/g" ./template_dnsmasq.conf > /etc/dnsmasq.conf
 
-# Copy main config
+# Copy main config and update interface placeholders
 cp ./config.js ../../
+sed -i "s/GHOST_PORT1_PLACEHOLDER/$GHOST_PORT1/g" ../../config.js
+sed -i "s/GHOST_PORT2_PLACEHOLDER/$GHOST_PORT2/g" ../../config.js
+sed -i "s/MGMT_PORT_PLACEHOLDER/$MGMT_PORT/g" ../../config.js
 
 #ask the tech for their multiplexer pref
 promptanswered=0
@@ -108,20 +112,38 @@ while [[ $promptanswered == 0 ]]; do
         promptanswered=1
     fi
 done
+# Update service file with management interface name
+sed -i "s/MGMT_INTERFACE_PLACEHOLDER/$MGMT_PORT/g" etc_init.d_dolos_service
 cp ./etc_init.d_dolos_service /etc/init.d/dolos_service
 chmod +x /etc/init.d/dolos_service
 
-#set management interface to start on boot
-systemctl start dnsmasq.service
-systemctl enable dnsmasq.service
+# Configure SSH to listen only on management interface
+echo "Configuring SSH for management interface only..."
+cp ./template_sshd_config /etc/ssh/sshd_config
+
+# Remove any existing DHCP configuration from main interfaces file
+echo "Cleaning up any existing DHCP configuration..."
+if grep -q "iface.*dhcp" /etc/network/interfaces; then
+    sed -i '/iface.*dhcp/d' /etc/network/interfaces
+fi
+
+#set management interface to start on boot - COMMENTED OUT (no DHCP server)
+# systemctl start dnsmasq.service
+# systemctl enable dnsmasq.service
 
 #reload the daemons after all those changes
 systemctl daemon-reload
-systemctl restart dnsmasq
+# systemctl restart dnsmasq
+
+# Restart SSH service to apply new configuration
+systemctl restart ssh
 
 #install Node.js deps
 cd ../../
 npm install
 
 echo "All set up! Reboot and check that your management network is running and accessible"
+echo "Management interface will be available at 192.168.100.1"
+echo "Configure your client with a static IP in the 192.168.100.x range (x=2-254)"
+echo "SSH access is restricted to the management interface only"
 echo "Then you can 'bash finish_setup.sh' to autorun the attack"
