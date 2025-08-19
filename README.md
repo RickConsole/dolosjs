@@ -8,7 +8,6 @@ mkdir /root/tools
 cd /root/tools
 git clone https://github.com/RickConsole/dolosjs
 cd dolosjs
-git checkout static-ip #temporary while in development
 cd setup/eth_mgmt
 chmod +x setup.sh
 ./setup.sh --ghost-port1 <interface name> --ghost-port2 <interface name> --management-port <interface name>
@@ -28,3 +27,4 @@ Then you can access the device by
 ssh root@192.168.100.1
 ```
 From here, you can run commands from the box itself or ssh proxy through to access the internal network. 
+
